@@ -1,0 +1,115 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Hi",
+                "How are you?",
+                "Hello",
+                "Good day",
+                "Whats up"
+            ],
+            "responses": [
+                "Hello!",
+                "Good to see you again!",
+                "Hi there, how can I help?",
+                "Hey there",
+                "Hiya"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "cya",
+                "see you",
+                "bye bye",
+                "See you later",
+                "Goodbye"
+            ],
+            "responses": [
+                "Sad to see you go :(",
+                "Talk to you later",
+                "Goodbye!",
+                "Come back soon",
+                "Thank you"
+            ]
+        },
+        {
+          "tag": "running_late",
+          "patterns": [
+            "I was running late",
+            "running late to class",
+            "running behind today",
+            "I was late to the lecture"
+          ],
+          "responses": [
+            "Oh no! Were you feeling stressed?"
+          ]
+        },
+        {
+          "tag": "worry",
+          "patterns": [
+            "I was worrying about missing the lecture",
+            "I was worried about missing it",
+            "worrying about the lecture on stemmers"
+          ],
+          "responses": [
+            "Don't worry, they were just discussing the stemmers and lemmatizers."
+          ]
+        },
+        {
+          "tag": "explain",
+          "patterns": [
+            "can you explain what they discussed",
+            "what did they discuss",
+            "explain that to me"
+          ],
+          "responses": [
+            "They explained how stemmers just cut off word endings, while lemmatizers consider the context."
+          ]
+        },
+        {
+          "tag": "stemmer_demo",
+          "patterns": [
+            "so running becomes run",
+            "does running become run",
+            "running becomes run right"
+          ],
+          "responses": [
+            "Yes, it becomes run (Stemmer applied)"
+          ]
+        },
+        {
+          "tag": "lemmatizer_demo",
+          "patterns": [
+            "what does better become",
+            "what about better"
+          ],
+          "responses": [
+            "\"Running\" becomes \"run\" in both, but \"better\" becomes \"good\" only in lemmatization (Lemmatizer applied)"
+          ]
+        },
+        {
+          "tag": "context_choice",
+          "patterns": [
+            "so choosing between them depends on the context",
+            "that makes sense it depends on context",
+            "so it depends on context"
+          ],
+          "responses": [
+            "Yes. If speed is important, use stemming. If accuracy matters, use lemmatization."
+          ]
+        },
+        {
+          "tag": "thanks",
+          "patterns": [
+            "thanks",
+            "thank you",
+            "appreciate it"
+          ],
+          "responses": [
+            "No worries! Have a great day!"
+          ]
+        }
+    ]
+}
