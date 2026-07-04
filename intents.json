@@ -3,113 +3,170 @@
         {
             "tag": "greeting",
             "patterns": [
-                "Hi",
-                "How are you?",
-                "Hello",
-                "Good day",
-                "Whats up"
+                "hi",
+                "hello",
+                "hey",
+                "howdy",
+                "good morning",
+                "good day",
+                "sup",
+                "greetings"
             ],
             "responses": [
-                "Hello!",
-                "Good to see you again!",
-                "Hi there, how can I help?",
-                "Hey there",
-                "Hiya"
+                "Hello! Welcome to the Iran Quiz! Tell me your name to get started.",
+                "Hey there! I'm your Iran trivia guide. What's your name?",
+                "Hi! Ready to test your knowledge about Iran? First, what's your name?"
+            ]
+        },
+        {
+            "tag": "name",
+            "patterns": [
+                "(?:my name is|I am|call me|I'm)\\s+(?P<name>[A-Z][a-z]+)"
+            ],
+            "responses": [
+                "Nice to meet you {name}! Let's begin. I'll ask you {total} questions about Iran.",
+                "Great to have you {name}! Get ready for {total} Iran trivia questions. Here we go!"
+            ]
+        },
+        {
+            "tag": "quiz_guess",
+            "patterns": [
+                "(?:i think (?:it'?s?|the answer is)|maybe|is it|could it be|i'?d say|my answer is|i guess|i'?d go with)?\\s*(?P<guess>[A-Za-z][A-Za-z\\s\\-]{1,30})"
+            ],
+            "responses": []
+        },
+        {
+            "tag": "hint",
+            "patterns": [
+                "hint",
+                "give me a hint",
+                "clue",
+                "help me",
+                "i don't know",
+                "no idea",
+                "not sure",
+                "skip",
+                "pass",
+                "next"
+            ],
+            "responses": []
+        },
+        {
+            "tag": "score",
+            "patterns": [
+                "score",
+                "points",
+                "how am i doing",
+                "how many did i get",
+                "how many right",
+                "my score",
+                "results",
+                "my points"
+            ],
+            "responses": [
+                "Your current score is {score} out of {answered} questions, {name}!",
+                "So far you have {score}/{answered} points, {name}. Keep going!",
+                "You've got {score} right out of {answered} so far, {name}!"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "thanks",
+                "thank you",
+                "cheers",
+                "appreciated",
+                "grateful",
+                "thx"
+            ],
+            "responses": [
+                "You're welcome!",
+                "Happy to help!",
+                "Anytime!"
             ]
         },
         {
             "tag": "goodbye",
             "patterns": [
-                "cya",
+                "bye",
+                "goodbye",
+                "exit",
+                "quit",
+                "farewell",
                 "see you",
-                "bye bye",
-                "See you later",
-                "Goodbye"
+                "ciao",
+                "later"
             ],
             "responses": [
-                "Sad to see you go :(",
-                "Talk to you later",
-                "Goodbye!",
-                "Come back soon",
-                "Thank you"
+                "Thanks for playing {name}! You scored {score} out of {total}. Come back soon!",
+                "Great game {name}! Final score: {score}/{total}. Goodbye!",
+                "See you next time {name}! You got {score}/{total} right. Well done!"
             ]
+        }
+    ],
+    "quiz": [
+        {
+            "question": "Question 1: What is the capital city of Iran?",
+            "answer": "tehran",
+            "aliases": ["teheran"],
+            "fact": "Tehran has been Iran's capital since 1796 and is home to over 15 million people in its greater metropolitan area.",
+            "hint": "It starts with 'T' and sits in the north of the country, at the foot of the Alborz mountains."
         },
         {
-          "tag": "running_late",
-          "patterns": [
-            "I was running late",
-            "running late to class",
-            "running behind today",
-            "I was late to the lecture"
-          ],
-          "responses": [
-            "Oh no! Were you feeling stressed?"
-          ]
+            "question": "Question 2: What is the official language of Iran?",
+            "answer": "persian",
+            "aliases": ["farsi"],
+            "fact": "Persian (Farsi) is one of the world's oldest languages with a rich literary tradition spanning over a thousand years.",
+            "hint": "It's also commonly known by a name starting with 'F'."
         },
         {
-          "tag": "worry",
-          "patterns": [
-            "I was worrying about missing the lecture",
-            "I was worried about missing it",
-            "worrying about the lecture on stemmers"
-          ],
-          "responses": [
-            "Don't worry, they were just discussing the stemmers and lemmatizers."
-          ]
+            "question": "Question 3: What is the official currency of Iran?",
+            "answer": "rial",
+            "aliases": ["toman", "iranian rial"],
+            "fact": "The official currency is the Iranian Rial, though Iranians commonly say 'Toman' in daily speech — 1 Toman equals 10 Rials.",
+            "hint": "It starts with 'R'. Locals often use a different informal name for it."
         },
         {
-          "tag": "explain",
-          "patterns": [
-            "can you explain what they discussed",
-            "what did they discuss",
-            "explain that to me"
-          ],
-          "responses": [
-            "They explained how stemmers just cut off word endings, while lemmatizers consider the context."
-          ]
+            "question": "Question 4: What is the name of Iran's famous ancient ceremonial capital, built around 515 BC and now a UNESCO World Heritage Site?",
+            "answer": "persepolis",
+            "aliases": [],
+            "fact": "Persepolis was the grand ceremonial capital of the Achaemenid Empire. Its name means 'City of Persians' in Greek.",
+            "hint": "It starts with 'P'. The name means 'City of Persians' in Greek."
         },
         {
-          "tag": "stemmer_demo",
-          "patterns": [
-            "so running becomes run",
-            "does running become run",
-            "running becomes run right"
-          ],
-          "responses": [
-            "Yes, it becomes run (Stemmer applied)"
-          ]
+            "question": "Question 5: What is the name of Iran's highest mountain, which is also a dormant volcano and the tallest peak in the Middle East?",
+            "answer": "damavand",
+            "aliases": ["mount damavand", "mt damavand"],
+            "fact": "Mount Damavand stands at 5,610 metres and features prominently in ancient Persian mythology as a symbol of national resistance.",
+            "hint": "It starts with 'D' and appears frequently in ancient Persian mythology."
         },
         {
-          "tag": "lemmatizer_demo",
-          "patterns": [
-            "what does better become",
-            "what about better"
-          ],
-          "responses": [
-            "\"Running\" becomes \"run\" in both, but \"better\" becomes \"good\" only in lemmatization (Lemmatizer applied)"
-          ]
+            "question": "Question 6: What spice does Iran produce roughly 90% of the world's supply of?",
+            "answer": "saffron",
+            "aliases": [],
+            "fact": "Iran produces around 90% of the world's saffron. The spice comes from the Crocus sativus flower and is worth more than gold by weight.",
+            "hint": "It's the world's most expensive spice by weight, deep red in colour, and used in Persian rice dishes."
         },
         {
-          "tag": "context_choice",
-          "patterns": [
-            "so choosing between them depends on the context",
-            "that makes sense it depends on context",
-            "so it depends on context"
-          ],
-          "responses": [
-            "Yes. If speed is important, use stemming. If accuracy matters, use lemmatization."
-          ]
+            "question": "Question 7: Which ancient Iranian poet wrote the Shahnameh (Book of Kings), one of the world's longest epic poems?",
+            "answer": "ferdowsi",
+            "aliases": ["firdausi", "firdousi", "abolqasem ferdowsi"],
+            "fact": "Ferdowsi completed the Shahnameh around 1010 CE after nearly 30 years of work. It contains around 60,000 verses and played a key role in preserving the Persian language.",
+            "hint": "He lived around 940-1020 CE and his tomb is in the city of Tus in northeastern Iran."
         },
         {
-          "tag": "thanks",
-          "patterns": [
-            "thanks",
-            "thank you",
-            "appreciate it"
-          ],
-          "responses": [
-            "No worries! Have a great day!"
-          ]
+            "question": "Question 8: How many countries share a land border with Iran?",
+            "answer": "7",
+            "aliases": ["seven"],
+            "fact": "Iran borders Turkey, Iraq, Armenia, Azerbaijan, Turkmenistan, Afghanistan, and Pakistan — 7 countries in total.",
+            "hint": "Think about all directions — northwest, west, north, northeast, east, and southeast."
+        },
+        {
+            "question": "Question 9: What is the name of the grand historic square in Isfahan, also known as Imam Square, listed as a UNESCO World Heritage Site?",
+            "answer": "naqsh-e jahan",
+            "aliases": ["naghsh-e jahan", "imam square", "naqsh e jahan", "naghshe jahan", "naqshe jahan"],
+            "fact": "Naqsh-e Jahan Square was built between 1598 and 1629 during the Safavid dynasty. Its name means 'Image of the World' in Persian.",
+            "hint": "It's in Isfahan. Its name means 'Image of the World' in Persian."
         }
     ]
 }
