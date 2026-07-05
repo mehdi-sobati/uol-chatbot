@@ -49,7 +49,7 @@
                 "pass",
                 "next"
             ],
-            "responses": []
+            "responses": ["Here's a hint: {hint}"]
         },
         {
             "tag": "score",
@@ -83,6 +83,38 @@
                 "You're welcome!",
                 "Happy to help!",
                 "Anytime!"
+            ]
+        },
+        {
+            "tag": "correct",
+            "patterns": [],
+            "responses": [
+                "Correct {name}! Well done. Your score is now {score}.",
+                "That's right {name}! +1 point. Score: {score}/{total}."
+            ]
+        },
+        {
+            "tag": "wrong",
+            "patterns": [],
+            "responses": [
+                "Not quite {name}. The correct answer was: {answer}.",
+                "Close but not right {name}. The answer was: {answer}."
+            ]
+        },
+        {
+            "tag": "quiz_complete",
+            "patterns": [],
+            "responses": [
+                "Quiz complete! You scored {score} out of {total}, {name}. Well done!",
+                "That's the end! Final score: {score}/{total}. Great effort {name}!"
+            ]
+        },
+        {
+            "tag": "default",
+            "patterns": [],
+            "responses": [
+                "I'm not sure about that. Try again!",
+                "Could you rephrase that?"
             ]
         },
         {
