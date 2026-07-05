@@ -2,7 +2,7 @@
 
 ## 1. Use-case and Domain
 
-A rule-based Iran trivia quiz chatbot (no ML). On launch it greets the user, captures their name via named-group regex, then poses 9 questions about Iran covering capital, language, currency, geography, and culture. Each answer gets right/wrong feedback plus an educational fact. Score is tracked throughout; the session closes with a final score summary. Side-intents (hint, score check, thanks, goodbye) are handled at any point in the conversation.
+I built a rule-based Iran trivia quiz chatbot — no machine learning. Rather than a simple Q&A bot, I wanted something with a proper flow: the bot greets the user, captures their name, then works through 9 questions covering Iran's capital, language, currency, geography and culture. Each answer gets right/wrong feedback plus a factual detail about the topic. Score is tracked throughout and summarised at the end. At any point the user can ask for a hint, check their score, or say goodbye.
 
 ---
 
@@ -39,13 +39,13 @@ Lemmatization (`scoring→score`, `thanks→thank`) allows variant phrasings to 
 
 ## 3. Advanced Techniques
 
-**Named-group regex** — `(?P<name>[A-Z][a-z]+)` and `(?P<guess>[A-Za-z][A-Za-z\s\-]{1,30})` with optional non-capturing prefix groups (`(?:my name is|i am|call me|i'm)` and `(?:i think it's|maybe|is it|...)?`). Both patterns run on raw input before any preprocessing to preserve capitalisation. A three-stage detection order (name → guess → standard patterns) ensures captures take priority.
+**Named-group regex** — I used named groups `(?P<name>[A-Z][a-z]+)` and `(?P<guess>[A-Za-z][A-Za-z\s\-]{1,30})` with optional non-capturing prefixes to handle phrasings like `"I think it's X"` or `"maybe X"`. Named groups let you extract matched text by label (`result.group("name")`) rather than positional index, which made the code much easier to follow. Both patterns need to run on raw input before preprocessing — otherwise lemmatization lowercases everything and the `[A-Z]` capitalisation check fails.
 
-**NLTK lemmatization pipeline** — `word_tokenize → isalpha() filter → stopword removal → pos_tag → WordNetLemmatizer`. `get_wordnet_pos()` maps Penn Treebank tags (NN, VBZ, JJR, RB) to WordNet's four classes (n/v/a/r) for accurate root forms. Both intent patterns (at load time) and user input (at query time) pass through the same pipeline, ensuring they are always in the same normalised form.
+**NLTK lemmatization pipeline** — I ran user input through `word_tokenize`, an `isalpha()` filter, stopword removal, `pos_tag`, and `WordNetLemmatizer` in that order. The key extra piece was `get_wordnet_pos()`, which converts Penn Treebank tags to the four categories WordNet understands (verb, adjective, adverb, noun) — without that, every word gets treated as a noun and lemmatization is much less accurate. I applied the same pipeline to the intent patterns at load time, so both sides are always in the same normalised form.
 
-**Template substitution from JSON** — all responses in `intents.json` carry placeholders (`{name}`, `{score}`, `{total}`, `{answer}`, `{hint}`) filled at runtime via `.format(...)`. A `try/except KeyError` guard handles templates that don't use every available variable.
+**Template substitution from JSON** — I stored responses as template strings in `intents.json` (e.g. `"Nice to meet you {name}! Let's begin with {total} questions."`) and filled them at runtime using `.format(...)`. This keeps all the response text out of the code, so the wording can be adjusted without touching any logic.
 
-**Session memory** — `user_state` dict (`name`, `score`, `current_question`, `answered`, `last_guess`) persists across all turns, enabling sequential question delivery, score tracking, and personalised responses without any external storage.
+**Session memory** — I used a single `user_state` dictionary to track name, score, current question, answered count, and last guess across all turns. This made it easy to reset state between games and kept the state management in one place.
 
 ---
 
@@ -59,10 +59,14 @@ At runtime, `load_files()` builds `rgx2int` (pattern→tag) and `int2res` (tag�
 
 ## 5. Process Reflection
 
-Development followed the four-part scaffold sequentially, each part introducing one new layer while preserving the prior structure.
+I built the chatbot incrementally across four parts, and each one revealed something I hadn't anticipated from the previous.
 
-**Challenge 1 — Apostrophe breaking guess capture.** Testing with natural inputs like `"afaik it's Tehran"` revealed the regex stopped at `'` (not in `[A-Za-z\s\-]`), capturing `"afaik it"` instead of `"Tehran"`. Fixed by stripping apostrophes before applying the guess pattern. This was not apparent from reading the pattern — only discovered through interactive testing.
+**Part 1 → Part 2.** Part 1 was straightforward — lists and a loop — but once I moved to regex in Part 2, I quickly realised why keeping `detect_pattern` separate from `chatbot_response` matters. When I later needed to add named-group logic for name and quiz guess capture, I only had to change one function rather than untangling everything. That separation paid off more and more as the bot grew.
 
-**Challenge 2 — `pd.read_json()` incompatibility.** The two-key JSON structure with different-length arrays caused a pandas shape mismatch when loading `intents.json`. Switching to `json.load()` resolved this and gave cleaner dict access with no unexpected coercion.
+**The apostrophe problem.** The most frustrating bug came from testing. I typed `"afaik it's Tehran"` and the bot didn't recognise it as a quiz answer. After some investigation I worked out that the character class `[A-Za-z\s\-]` doesn't include apostrophes, so `re.search` was stopping at the `'` in `it's` and capturing `"afaik it"` rather than `"Tehran"`. Stripping apostrophes with `re.sub(r"'", "", ...)` before the guess pattern fixed it — one line, but it took a while to understand what was actually going wrong.
 
-**Challenge 3 — Named-group patterns must bypass preprocessing.** An early attempt to preprocess all input before named-group matching failed because lemmatization lowercases tokens, breaking the `[A-Z][a-z]+` capitalisation requirement. The fix was to run named-group patterns on raw input first, then preprocess the remainder for standard intent matching.
+**Switching from `pd.read_json()` to `json.load()`.** When I first set up Part 3 I followed the reference and used pandas. It threw a shape mismatch because my `intents.json` has two top-level keys (`intents` and `quiz`) with arrays of different lengths — pandas couldn't handle that structure. `json.load()` gave me direct dict access and was a better fit for how I was already working with the data.
+
+**Part 4 — preprocessing order matters.** My first attempt was to preprocess all input before doing anything else, including the name and quiz guess capture. That broke immediately: lemmatization lowercases everything, so `[A-Z][a-z]+` never matched and no name was ever stored. I had to restructure so that named-group patterns run on raw input first, then the rest gets preprocessed. Once I understood why the order mattered it was an easy fix, but it wasn't obvious upfront.
+
+**Iterative improvements from testing.** Two things stood out from my own testing. First, the bot felt repetitive — giving the same response every time for the same intent. I fixed this by adding multiple response templates per intent in `intents.json`, selected at random. Second, the answer matching was too strict — typing `"Farsi"` instead of `"Persian"` was being marked wrong. I added an `aliases` list per quiz question and used substring matching in `check_answer`, so common alternatives score correctly without any extra logic in the code.
