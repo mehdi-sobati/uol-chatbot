@@ -66,5 +66,3 @@ Development followed the four-part scaffold sequentially, each part introducing 
 **Challenge 2 — `pd.read_json()` incompatibility.** The two-key JSON structure with different-length arrays caused a pandas shape mismatch when loading `intents.json`. Switching to `json.load()` resolved this and gave cleaner dict access with no unexpected coercion.
 
 **Challenge 3 — Named-group patterns must bypass preprocessing.** An early attempt to preprocess all input before named-group matching failed because lemmatization lowercases tokens, breaking the `[A-Z][a-z]+` capitalisation requirement. The fix was to run named-group patterns on raw input first, then preprocess the remainder for standard intent matching.
-
-**Iteration across parts.** Peer feedback from sessions and self-review during testing led to two concrete improvements: adding multiple response templates per intent in `intents.json` to increase variety, and adding `aliases` per quiz question (e.g. `"farsi"` for `"persian"`, `"teheran"` for `"tehran"`) so the bot accepts common alternative answers without any extra logic in the code.
